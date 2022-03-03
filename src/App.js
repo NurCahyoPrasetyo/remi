@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import {
+  Row,
+  Col,
+  Card,
+  InputGroup,
+  FormControl,
+  Button,
+} from "react-bootstrap";
 
 const App = () => {
   const [limitPlayer, setLimitPlayer] = useState(false);
@@ -6,8 +14,6 @@ const App = () => {
   const [activeForm, setActiveForm] = useState("");
   const [name, setName] = useState("");
   const [score, setScore] = useState("");
-
-  console.log("list", listPlayers);
 
   const onChangeform = (data) => {
     setName(data);
@@ -37,58 +43,118 @@ const App = () => {
     const newData = {
       id: data.id,
       name: data.name,
-      score: type === 'plus' ? parseInt(data.score) + parseInt(score) : parseInt(data.score) - parseInt(score),
+      score:
+        type === "plus"
+          ? parseInt(data.score) + parseInt(score)
+          : parseInt(data.score) - parseInt(score),
     };
 
-    listPlayers[i] = newData
-    setActiveForm("")
-    setScore("")
+    listPlayers[i] = newData;
+    setActiveForm("");
+    setScore("");
   };
-
 
   return (
     <main className="App">
+      <h1 className="text-center my-2">~REMI~</h1>
       {!limitPlayer && (
         <section id="input-form">
-          <input
-            type="text"
-            placeholder="Input Your players"
-            onChange={(e) => onChangeform(e.target.value)}
-            value={name}
-          />
-          <button onClick={() => onSubmitPlayers()}>submit</button>
+          <Card body>
+            <InputGroup className="mb-3">
+              <FormControl
+                type="text"
+                placeholder="Input Your players"
+                aria-label="Input Your players"
+                aria-describedby="basic-addon2"
+                onChange={(e) => onChangeform(e.target.value)}
+                value={name}
+              />
+            </InputGroup>
+            <Button
+              variant="primary"
+              size="md"
+              className="w-100"
+              onClick={() => onSubmitPlayers()}
+            >
+              CREATE
+            </Button>
+          </Card>
         </section>
       )}
 
       <section id="list-players">
-        <h1>list players</h1>
-        <div className="box-list-players">
+        <h2 className="mt-4">LIST PLAYERS :</h2>
+        <Row>
           {listPlayers.length === 0
             ? "Not Players"
             : listPlayers.map((data, i) => (
-                <div key={i}>
-                  <p>{data.name}</p>
-                  <p>{data.score}</p>
-                  {activeForm === data.id ? (
-                    <div>
-                      <input
-                        type="number"
-                        value={score}
-                        onChange={(e) => onInputScore(e.target.value)}
-                      />
-                      <div>
-                        <button onClick={() => onChangeTarget(data, i, 'plus')}>+</button>
-                        <button onClick={() => onChangeTarget(data, i, 'minus')}>-</button>
-                      </div>
-                    </div>
-                  ) : (
-                    <button onClick={() => setActiveForm(data.id)}>
-                      Input Score
-                    </button>
-                  )}
-                </div>
+                <Col className="my-2" xs={6} lg={3} key={i}>
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        <h3>{data.name}</h3>
+                      </Card.Title>
+                      <Card.Text className="text-center">
+                        <h4>{data.score}</h4>
+                      </Card.Text>
+                      {activeForm === data.id ? (
+                        <Row>
+                          <Col xs={12}>
+                            <InputGroup className="mb-3">
+                              <FormControl
+                                type="number"
+                                aria-label="Input Your players"
+                                aria-describedby="basic-addon2"
+                                value={score}
+                                onChange={(e) => onInputScore(e.target.value)}
+                              />
+                            </InputGroup>
+                          </Col>
+                          {score !== "" && (
+                            <>
+                              <Col xs={6}>
+                                {" "}
+                                <Button
+                                  variant="success"
+                                  size="md"
+                                  className="w-100"
+                                  onClick={() =>
+                                    onChangeTarget(data, i, "plus")
+                                  }
+                                >
+                                  +
+                                </Button>
+                              </Col>
+                              <Col xs={6}>
+                                {" "}
+                                <Button
+                                  variant="danger"
+                                  size="md"
+                                  className="w-100"
+                                  onClick={() =>
+                                    onChangeTarget(data, i, "minus")
+                                  }
+                                >
+                                  -
+                                </Button>
+                              </Col>
+                            </>
+                          )}
+                        </Row>
+                      ) : (
+                        <Button
+                          variant="primary"
+                          onClick={() => setActiveForm(data.id)}
+                        >
+                          {" "}
+                          Input Score
+                        </Button>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </Col>
               ))}
-        </div>
+        </Row>
       </section>
     </main>
   );
