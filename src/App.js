@@ -56,7 +56,7 @@ const App = () => {
 
   return (
     <main className="App">
-      <h1 className="text-center my-2">~REMI~</h1>
+      <h1 className="text-center my-3">~ REMI V-1.0 ~</h1>
       {!limitPlayer && (
         <section id="input-form">
           <Card body>
@@ -86,7 +86,7 @@ const App = () => {
         <h2 className="mt-4">LIST PLAYERS :</h2>
         <Row>
           {listPlayers.length === 0
-            ? "Not Players"
+            ? <h3 className="text-center w-100 my-5">"Not Players"</h3>
             : listPlayers.map((data, i) => (
                 <Col className="my-2" xs={6} lg={3} key={i}>
                   <Card>
